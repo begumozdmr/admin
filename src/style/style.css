@@ -126,7 +126,6 @@ img {
 }
 .navbar__logo img {
   height: inherit;
-  padding-left: 30px;
 }
 .navbar__logo h1,
 .navbar__logo h3,
@@ -200,12 +199,13 @@ img {
   font-size: 14px;
   transition: all 0.4s ease-in-out;
   cursor: pointer;
+  gap: 5px;
 }
 .button:hover {
   opacity: 0.6;
 }
 .button--delete {
-  background: #DF4949;
+  background: transparent;
   padding: 10px 17px;
 }
 .button--change {
@@ -217,8 +217,7 @@ img {
   cursor: default;
 }
 .button--checked {
-  background: #4cbb17;
-  padding: 10px 15px;
+  background: transparent;
 }
 .button--checked.disabled {
   opacity: 0.3;
@@ -321,6 +320,7 @@ input[type=checkbox]:checked::before {
 }
 .home__page__content h1 {
   font-size: 40px;
+  text-align: center;
 }
 
 .home__page__button {
@@ -404,17 +404,22 @@ input[type=checkbox]:checked::before {
 .error__title {
   opacity: 0;
   visibility: hidden;
-  width: 0;
+  width: 100%;
   height: 0;
   font-size: 22px;
   color: #DF4949;
   transition: all 0.3s ease-in-out;
+  display: flex;
+  justify-content: center;
+  margin: 13px;
 }
 .error__title.active {
   opacity: 1;
   visibility: visible;
   width: auto;
   height: auto;
+  display: flex;
+  justify-content: center;
 }
 
 .table__container {
@@ -610,6 +615,9 @@ input[type=checkbox]:checked::before {
   .work__order__inputs {
     width: 100%;
   }
+  .table__container--invoice {
+    width: 100%;
+  }
 }
 @media (min-width: 576px) {
   .grid__2 {
@@ -638,6 +646,9 @@ input[type=checkbox]:checked::before {
     width: 100%;
   }
   .work__order__inputs {
+    width: 100%;
+  }
+  .table__container--invoice {
     width: 100%;
   }
 }
@@ -670,6 +681,9 @@ input[type=checkbox]:checked::before {
   .work__order__inputs {
     width: 100%;
   }
+  .table__container--invoice {
+    width: 50%;
+  }
 }
 @media (min-width: 992px) {
   .grid__4 {
@@ -701,6 +715,9 @@ input[type=checkbox]:checked::before {
   }
   .work__order__inputs {
     width: 55%;
+  }
+  .table__container--invoice {
+    width: 50%;
   }
 }
 @media (min-width: 1200px) {

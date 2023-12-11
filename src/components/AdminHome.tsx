@@ -1,12 +1,12 @@
 import { GlobalContext } from 'context/GlobalState';
 import React, { useContext, useState } from 'react'
-import Load from './Load';
 
 export default function AdminHome() {
 
-    const { workOrderData, setWorkOrderData, userData, loginUserData } = useContext(GlobalContext);
+    const { workOrderData, setWorkOrderData, userData, loginUserData, changeWorkOrder, changeControl, errorMessage, ErrorFunction, inputControl } = useContext(GlobalContext);
     const [inputWorkOrder, setInputWorkOrder] = useState({ workName: "", workNotes: "", workOrder: [] as string[] });
     const [workId, setWorkId] = useState<string>("");
+    const [editableWorkName, setEditableWorkName] = useState({ workName: changeWorkOrder[0]?.workName || '', workNotes: changeWorkOrder[0]?.workNotes || '', workOrder: changeWorkOrder[0]?.workUser as string[] });
 
     let randomID = require('random-token').create('123456789');
 
@@ -14,7 +14,12 @@ export default function AdminHome() {
         setWorkId(randomID(5));
     }, [])
 
-    const handleAddWorkOrder = () => {
+    const handleAddWorkOrder = (id: number) => {
+
+        if (!inputWorkOrder.workName || !inputWorkOrder.workNotes || !inputWorkOrder.workOrder) {
+            ErrorFunction("Please do not leave blank");
+            return;
+        }
 
         let newWorkOrder = {
             id: Number(randomID(4)),
@@ -27,39 +32,62 @@ export default function AdminHome() {
             number: `INV-${workId}`
         };
 
-        fetch("http://localhost:5000/workOrder", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(newWorkOrder)
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                setWorkOrderData([...workOrderData, json])
-                setInputWorkOrder({ workName: "", workNotes: "", workOrder: [] })
+        let changeWorkOrder = {
+            workName: editableWorkName.workName,
+            workUser: editableWorkName.workOrder,
+            notes: editableWorkName.workNotes,
+        }
+
+        changeControl.changeControl ?
+            fetch(`http://localhost:5000/workOrder/${id}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(changeWorkOrder)
             })
-            .finally(() => {
-                setTimeout(() => {
-                    <Load />
-                }, 3000)
+                .then((updateCompleted) => updateCompleted.json())
+            :
+            fetch("http://localhost:5000/workOrder", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(newWorkOrder)
             })
+                .then((response) => response.json())
+                .then((json) => {
+                    setWorkOrderData([...workOrderData, json])
+                    setInputWorkOrder({ workName: "", workNotes: "", workOrder: [] })
+                })
     };
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
         const { name, value } = event.target;
-        setInputWorkOrder((prevInput) => ({
-            ...prevInput,
-            [name]: value,
-        }));
+        changeControl.changeControl ?
+            setEditableWorkName((prevInput) => ({
+                ...prevInput,
+                [name]: value
+            }))
+            :
+            setInputWorkOrder((prevInput) => ({
+                ...prevInput,
+                [name]: value,
+            }));
     };
 
     const handleUserSelection = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedOptions = Array.from(event.target.selectedOptions, (option) => option.value);
-        setInputWorkOrder((prevInput) => ({
-            ...prevInput,
-            workOrder: selectedOptions,
-        }));
+        changeControl.changeControl ?
+            setEditableWorkName((prevInput) => ({
+                ...prevInput,
+                workOrder: selectedOptions
+            }))
+            :
+            setInputWorkOrder((prevInput) => ({
+                ...prevInput,
+                workOrder: selectedOptions,
+            }));
     };
 
     return (
@@ -106,14 +134,26 @@ export default function AdminHome() {
                 </div>
             </div>
 
+            <h3 className={`error__title ${inputControl.inputControl ? "active" : ""}`}>{errorMessage.errorMessage}</h3>
+
             <div className='form__action__container'>
+
                 <form action='' className='work__order__inputs'>
 
                     <label>Work Name : </label>
-                    <input type='text' name='workName' value={inputWorkOrder.workName} onChange={handleInputChange}></input>
+                    <input type='text' name='workName' value={changeControl.changeControl ? editableWorkName.workName : inputWorkOrder.workName} onChange={handleInputChange}></input>
 
                     <label>Work User : </label>
-                    <select multiple name='workOrder' value={inputWorkOrder.workOrder} onChange={handleUserSelection}>
+                    <select
+                        multiple
+                        name='workOrder'
+                        value={
+                            changeControl
+                                ? editableWorkName.workOrder
+                                : inputWorkOrder.workOrder
+                        }
+                        onChange={handleUserSelection}
+                    >
                         {userData.map((index) => {
                             return (
                                 <option key={index.id} value={index.name}>{index.name}</option>
@@ -122,11 +162,18 @@ export default function AdminHome() {
                     </select>
 
                     <label>Work Notes : </label>
-                    <textarea name='workNotes' value={inputWorkOrder.workNotes} onChange={handleInputChange} />
+                    <textarea name='workNotes' value={changeControl.changeControl ? editableWorkName.workNotes : inputWorkOrder.workNotes} onChange={handleInputChange} />
 
-                    <button className='button button--change' onClick={() => handleAddWorkOrder()}>Add Work Order</button>
+                    <button className='button button--change' onClick={() => handleAddWorkOrder(changeWorkOrder[0]?.id)}>
+                        {
+                            changeControl.changeControl ?
+                                "Change"
+                                :
+                                "Add Work Order"
+                        }
+                    </button>
                 </form>
-            </div>
+            </div >
         </>
     )
 }

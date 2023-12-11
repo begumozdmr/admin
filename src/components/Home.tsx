@@ -25,7 +25,7 @@ interface LoginInputType {
 
 export default function Home() {
 
-    const { userData, setUserData } = useContext(GlobalContext);
+    const { userData, setUserData, setInputControl, inputControl, errorMessage, ErrorFunction } = useContext(GlobalContext);
 
     const [activeLink, setActiveLink] = useState<number>(1)
     const swiperRef = useRef<SwiperType | null>(null);
@@ -37,8 +37,6 @@ export default function Home() {
         setActiveLink(id === activeLink ? 0 : id);
     };
 
-    const [inputControl, setInputControl] = useState<boolean>(false);
-    const [errorMessage, setErrorMessage] = useState<string>("");
     const [registerInput, setRegisterInput] = useState<RegisterInputType>({ name: "", email: "", password: "" });
     const [loginInput, setLoginInput] = useState<LoginInputType>({ email: "", password: "" });
 
@@ -48,11 +46,6 @@ export default function Home() {
 
     const handleLoginInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setLoginInput({ ...loginInput, [event.target.name]: event.target.value })
-    };
-
-    const ErrorFunction = (name: string) => {
-        setInputControl(true);
-        setErrorMessage(name);
     };
 
     const RegisterNewUser = () => {
@@ -90,7 +83,7 @@ export default function Home() {
                 .then((json) => {
                     setUserData([...userData, json]);
                     setRegisterInput({ name: "", email: "", password: "" });
-                    setInputControl(false);
+                    setInputControl({ inputControl: false });
                     swiperRef.current?.slideNext();
                     handleLinkClick(2);
                 })
@@ -133,7 +126,7 @@ export default function Home() {
             <section className='home__page__container'>
                 <div className='home__page__content'>
 
-                    <h1> WELCOME ENNE</h1>
+                    <h1> WELCOME UMTAN</h1>
 
                     <div className='grid__2'>
                         <button className={`home__page__button ${activeLink === 1 ? "active" : ""}`} onClick={() => { swiperRef.current?.slidePrev(); handleLinkClick(1) }}>REGISTER</button>
@@ -150,17 +143,17 @@ export default function Home() {
                     >
                         <SwiperSlide>
                             <div className='form__container'>
-                                <h3 className={`error__title ${inputControl ? "active" : ""}`}>{errorMessage}</h3>
+                                <h3 className={`error__title ${inputControl.inputControl ? "active" : ""}`}>{errorMessage.errorMessage}</h3>
 
                                 <form action=''>
                                     <label>* Name Surname : </label>
-                                    <input type='text' placeholder='Exp John Doe' required name='name' value={registerInput.name} onChange={handleOnChange} className={`${inputControl ? "error" : ""}`}></input>
+                                    <input type='text' placeholder='Exp John Doe' required name='name' value={registerInput.name} onChange={handleOnChange} className={`${inputControl.inputControl ? "error" : ""}`}></input>
 
                                     <label>* Email :  </label>
-                                    <input type='text' placeholder='info@gmail.com' required name='email' value={registerInput.email} onChange={handleOnChange} className={`${inputControl ? "error" : ""}`}></input>
+                                    <input type='text' placeholder='info@gmail.com' required name='email' value={registerInput.email} onChange={handleOnChange} className={`${inputControl.inputControl ? "error" : ""}`}></input>
 
                                     <label>* Password : </label>
-                                    <input type='password' placeholder='********' required name='password' value={registerInput.password} onChange={handleOnChange} className={`${inputControl ? "error" : ""}`}></input>
+                                    <input type='password' placeholder='********' required name='password' value={registerInput.password} onChange={handleOnChange} className={`${inputControl.inputControl ? "error" : ""}`}></input>
                                 </form>
 
                                 <div>
@@ -171,13 +164,13 @@ export default function Home() {
 
                         <SwiperSlide>
                             <div className='form__container'>
-                                <h3 className={`error__title ${inputControl ? "active" : ""}`}>{errorMessage}</h3>
+                                <h3 className={`error__title ${inputControl ? "active" : ""}`}>{errorMessage.errorMessage}</h3>
                                 <form action=''>
                                     <label>* Email :  </label>
-                                    <input type='text' placeholder='info@gmail.com' required name='email' value={loginInput.email} onChange={handleLoginInputChange} className={`${inputControl ? "error" : ""}`}></input>
+                                    <input type='text' placeholder='info@gmail.com' required name='email' value={loginInput.email} onChange={handleLoginInputChange} className={`${inputControl.inputControl ? "error" : ""}`}></input>
 
                                     <label>* Password : </label>
-                                    <input type='password' placeholder='********' required name='password' value={loginInput.password} onChange={handleLoginInputChange} className={`${inputControl ? "error" : ""}`}></input>
+                                    <input type='password' placeholder='********' required name='password' value={loginInput.password} onChange={handleLoginInputChange} className={`${inputControl.inputControl ? "error" : ""}`}></input>
                                 </form>
 
                                 <div>

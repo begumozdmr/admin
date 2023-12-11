@@ -41,6 +41,29 @@ interface AdminControl {
 }
 type SetAdminControl = (adminControl: AdminControl) => void
 
+interface ChangeWorkOrder {
+    id: number,
+    workName: string,
+    workNotes: string,
+    workUser: string[]
+}
+type SetChangeWorkOrder = (changeWorkOrder: ChangeWorkOrder[]) => void
+
+interface ChangeControl {
+    changeControl: boolean
+}
+type SetChangeControl = (changeControl: ChangeControl) => void
+
+interface InputControl {
+    inputControl: boolean
+}
+type SetInputControl = (inputControl: InputControl) => void
+
+interface ErrorMessage {
+    errorMessage: string
+}
+type SetErrorMessage = (errorMessage: ErrorMessage) => void
+
 export type Type = {
     userData: UserData[];
     setUserData: SetUserData;
@@ -50,6 +73,15 @@ export type Type = {
     setWorkOrderData: SetWorkOrderData;
     adminControl: AdminControl;
     setAdminControl: SetAdminControl;
+    changeWorkOrder: ChangeWorkOrder[];
+    setChangeWorkOrder: SetChangeWorkOrder;
+    changeControl: ChangeControl;
+    setChangeControl: SetChangeControl;
+    inputControl: InputControl;
+    setInputControl: SetInputControl;
+    errorMessage: ErrorMessage;
+    setErrorMessage: SetErrorMessage;
+    ErrorFunction: (name: string) => void;
 };
 
 export const GlobalContext = createContext<Type>({} as Type);
@@ -58,9 +90,18 @@ export const GlobalProvider = ({ children }: ContextProps) => {
 
     const [userData, setUserData] = React.useState<UserData[]>([]);
     const [workOrderData, setWorkOrderData] = React.useState<WorkOrderData[]>([]);
+    const [changeWorkOrder, setChangeWorkOrder] = React.useState<ChangeWorkOrder[]>([]);
     const [loginUserData, setLoginUserData] = React.useState<LoginUserData>({ id: "", name: "", token: "", email: "" });
     const [adminControl, setAdminControl] = React.useState<AdminControl>({ adminControl: false });
-    
+    const [changeControl, setChangeControl] = React.useState<ChangeControl>({ changeControl: false });
+    const [inputControl, setInputControl] = React.useState<InputControl>({ inputControl: false });
+    const [errorMessage, setErrorMessage] = React.useState<ErrorMessage>({ errorMessage: "" });
+
+    const ErrorFunction = (name: string) => {
+        setInputControl({ inputControl: true });
+        setErrorMessage({ errorMessage: name });
+    };
+
     useEffect(() => {
 
         fetch("http://localhost:5000/users")
@@ -77,7 +118,17 @@ export const GlobalProvider = ({ children }: ContextProps) => {
 
     }, []);
 
-    const data = { userData, setUserData, loginUserData, setLoginUserData, setWorkOrderData, workOrderData, adminControl, setAdminControl }
+    const data = {
+        userData, setUserData,
+        loginUserData, setLoginUserData,
+        setWorkOrderData, workOrderData,
+        adminControl, setAdminControl,
+        changeWorkOrder, setChangeWorkOrder,
+        changeControl, setChangeControl,
+        inputControl, setInputControl,
+        errorMessage, setErrorMessage,
+        ErrorFunction
+    }
 
     return (
         <GlobalContext.Provider value={data}>

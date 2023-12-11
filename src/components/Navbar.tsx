@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { IconFileInvoice, IconTable, IconUser, IconUserCircle, IconUsers } from '@tabler/icons-react';
 import { Link, useNavigate } from "react-router-dom";
 import { IconSettings } from '@tabler/icons-react';
@@ -10,6 +10,16 @@ export default function Navbar() {
     const { loginUserData, adminControl, setLoginUserData, setAdminControl } = useContext(GlobalContext);
     const [menuActive, setMenuActive] = useState<boolean>(false);
     const navigate = useNavigate();
+
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    const handleClickOutsideDropdown = (e: any) => {
+        if (menuActive && !dropdownRef.current?.contains(e.target as Node)) {
+            setMenuActive(false);
+        };
+    };
+
+    document.addEventListener("click", handleClickOutsideDropdown);
 
     const LogOutFunction = () => {
         fetch(`http://localhost:5000/users/${loginUserData.id}`, {
@@ -36,7 +46,7 @@ export default function Navbar() {
                 let status = data[0];
                 if (status) {
                     setLoginUserData({ id: status.id, name: status.name, token: status.token, email: status.email });
-                    
+
 
                     if (status.status === "admin") {
                         setAdminControl({ adminControl: true });
@@ -61,17 +71,17 @@ export default function Navbar() {
 
                             <div className='navbar__logo'>
                                 <img src={require("../img/logo.png")} alt='logo'></img>
-                                <h1>ENNE</h1>
+                                <h1>UMTAN</h1>
                             </div>
 
                             <div className='navbar__logo'>
                                 <h3>Welcome {loginUserData.name}</h3>
-                                <div className='navbar__button' onClick={() => setMenuActive(!menuActive)}>
+                                <div className='navbar__button' onClick={() => setMenuActive(!menuActive)} ref={dropdownRef}>
                                     <button className='button'>
                                         <IconUser width={"18px"} height={"18px"} />
                                     </button>
 
-                                    <div className={`users__profil__menu__container ${menuActive ? "active" : ""}`}>
+                                    <div className={`users__profil__menu__container ${menuActive ? "active" : ""}`} >
                                         <div className='users__profil__content'>
                                             <IconUserCircle />
                                             <Link to="#">Profil</Link>

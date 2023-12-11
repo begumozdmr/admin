@@ -1,3 +1,4 @@
+import { IconTrash } from '@tabler/icons-react';
 import Navbar from 'components/Navbar';
 import { GlobalContext } from 'context/GlobalState';
 import React, { useContext, useState } from 'react'
@@ -113,7 +114,9 @@ export default function UserTable() {
                                                         <td>{index.email}</td>
                                                         <td>{index.date}</td>
                                                         <td>
-                                                            <button className='button button--delete' onClick={() => handleClickDeleteUser(index.id)}>Delete</button>
+                                                            <button className='button button--delete' onClick={() => handleClickDeleteUser(index.id)}>
+                                                                <IconTrash style={{ color: "#DF4949" }} />
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                 )
@@ -121,18 +124,18 @@ export default function UserTable() {
                                         }
                                     </tbody>
                                 </table>
+                            </div>
 
-                                <div className='table__pagination'>
-                                    <button onClick={PrevFunction} className='pagination'>Prev</button>
-                                    {
-                                        numbers.map((number, i: number) => {
-                                            return (
-                                                <button key={i} onClick={() => ChangePages(number)} className={`pagination__item ${currentPage === number ? "active" : ""}`}>{number}</button>
-                                            )
-                                        })
-                                    }
-                                    <button onClick={NextFunction} className='pagination'>Next</button>
-                                </div>
+                            <div className='table__pagination'>
+                                <button onClick={PrevFunction} className='pagination'>Prev</button>
+                                {
+                                    numbers.map((number, i: number) => {
+                                        return (
+                                            <button key={i} onClick={() => ChangePages(number)} className={`pagination__item ${currentPage === number ? "active" : ""}`}>{number}</button>
+                                        )
+                                    })
+                                }
+                                <button onClick={NextFunction} className='pagination'>Next</button>
                             </div>
                         </div>
                     </div>

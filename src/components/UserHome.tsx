@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import Navbar from './Navbar'
 import { GlobalContext } from 'context/GlobalState'
 import AdminHome from './AdminHome';
+import { IconCheck } from '@tabler/icons-react';
 
 interface FilterTable {
   id: number,
@@ -68,7 +69,7 @@ export default function UserHome() {
                             <th>DATE</th>
                             <th>NOTE</th>
                             <th>ADMIN</th>
-                            <th>CHECKED</th>
+                            <th>CHECK</th>
                           </tr>
                         </thead>
 
@@ -85,7 +86,9 @@ export default function UserHome() {
                                   <td>{index.notes}</td>
                                   <td>{index.billed}</td>
                                   <td>
-                                    <button className={`button button--checked ${index.completed ? "disabled" : ""}`} onClick={() => handleCheckbox(index.id)} disabled={index.completed ? true : false}>Checked</button>
+                                    <button className={`button button--checked ${index.completed ? "disabled" : ""}`} onClick={() => handleCheckbox(index.id)} disabled={index.completed ? true : false}>
+                                      <IconCheck style={{ color: "#4cbb17" }} />
+                                    </button>
                                   </td>
                                 </tr>
                               )
