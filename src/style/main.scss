@@ -1,20 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200;300;400;500;600&display=swap');
 
-$background-color: #14141F;
+$background-color: rgb(37 41 60 / 1);
+$navbar-background: rgb(47 51 73 / 1);
+$line: rgb(67 73 104 / 1);
 $dark-color1: rgba(20, 20, 31, 0.9);
 $dark-color2: #1F1F2C;
 $dark-color3: #0D0D11;
 $dark-color4: #343444;
 $warning: #DF4949;
+$color: rgb(236 237 247 / 1);
 $white-text: #FFFFFF;
-$white-dark: #515151;
 $grey: #8A8AA0;
+$shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 $grey2: #ebebeb;
-$purple: #9835fb;
 $blue: #4B50E6;
 $white2: #F8F8F8;
 $green: #4cbb17;
-$gradient: linear-gradient(45deg, $blue, $purple);
+$pagination: rgb(111 107 125 /1);
+$purple: rgb(115 103 240 / 1);
 
 $font-weights: (
     '400': 400,
@@ -68,8 +71,8 @@ body {
     box-sizing: border-box;
     width: 100%;
     height: 100%;
-    color: $white-dark;
-    background: $white-text;
+    color: $white2;
+    background: rgb(37 41 60 / 1);
 }
 
 .container {
@@ -143,9 +146,10 @@ img {
     color: $white-text;
     width: 100%;
     height: 100px;
-    border-bottom: 1px solid $dark-color4;
-    background: $dark-color3;
+    background: $navbar-background;
     z-index: 100;
+    color: $color;
+    box-shadow: $shadow;
 }
 
 .navbar__row {
@@ -233,9 +237,9 @@ img {
     flex-direction: column;
     top: 100%;
     right: 0;
-    background: $dark-color3;
+    background: $navbar-background;
     transition: all 0.3s ease-in-out;
-    color: $white-text;
+    color: $color;
 
     &.active {
         opacity: 1;
@@ -249,7 +253,7 @@ img {
     gap: 10px;
     padding: 15px;
     width: 155px;
-    border-top: 0.5px solid $grey2;
+    border-top: 0.5px solid $line;
     transition: all 0.4s ease-in-out;
     cursor: pointer;
     border-left: 4px solid transparent;
@@ -259,12 +263,12 @@ img {
     }
 
     &:hover {
-        border-left: 4px solid $blue;
+        border-left: 4px solid $purple;
     }
 }
 
 .button {
-    background: $dark-color4;
+    background: #3D3D4D;
     border-radius: 10px;
     padding: 7px;
     outline: none;
@@ -285,7 +289,7 @@ img {
     }
 
     &--change {
-        background: $dark-color4;
+        background: $purple;
         padding: 10px 15px;
 
         &.disabled {
@@ -549,31 +553,24 @@ input[type="checkbox"] {
     font-family: 'Dosis', sans-serif;
     border-collapse: collapse;
     width: 100%;
-    color: $white-dark;
+    color: $color;
     letter-spacing: 0.1em;
     text-align: center;
+    background: transparent;
 
     td,
     th {
-        border: 1px solid #ddd;
+        border: 1px solid $line;
         padding: 12px;
     }
 
     th {
         padding-top: 12px;
         padding-bottom: 12px;
-        background: $dark-color2;
-        color: white;
+        background: $white2;
+        color: $dark-color3;
         letter-spacing: 0.1em;
         text-align: center;
-    }
-
-    &tr:nth-child(even) {
-        background-color: #f2f2f2;
-    }
-
-    &tr:hover {
-        background-color: #ddd;
     }
 
     &--invoice {
@@ -601,19 +598,20 @@ input[type="checkbox"] {
         outline: none;
         @include width-height("text-40", "text-36");
         cursor: pointer;
-        border: 1px solid $dark-color2;
-        color: $dark-color4;
+        border: 1px solid $color;
+        color: $pagination;
         @include font-size('text-16');
         @include font-weight("500");
-        background: transparent;
+        background: $color;
         border-radius: 10px;
         transition: all 0.4s ease-in-out;
     }
 
     .pagination__item {
         &.active {
-            background: $dark-color2;
-            color: $white2;
+            background: $purple;
+            border: 1px solid $purple;
+            color: $color;
             transition: all 0.4s ease-in-out;
         }
     }
@@ -651,10 +649,10 @@ input[type="checkbox"] {
         border-radius: 15px;
         outline: none;
         letter-spacing: 0.1em;
-        background: $dark-color2;
+        background: $white2;
         font-family: 'Dosis', sans-serif;
         width: auto;
-        color: $white2;
+        color: $dark-color3;
     }
 }
 
@@ -674,7 +672,7 @@ input[type="checkbox"] {
     width: 55%;
 
     label {
-        color: $dark-color3;
+        color: $white2;
         @include font-size('text-18');
     }
 
@@ -682,9 +680,9 @@ input[type="checkbox"] {
     textarea,
     select[multiple] {
         background: transparent;
-        border: 1px solid $dark-color3;
+        border: 1px solid $line;
         outline: none;
-        color: $dark-color3;
+        color: $color;
         border-radius: 15px;
         padding: 12px;
         @include font-size('text-16');
