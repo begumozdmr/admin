@@ -171,7 +171,7 @@
       "id": 6321,
       "workName": "Lorem Ipsum is simply dummy",
       "date": "10.12.2023",
-      "completed": false,
+      "completed": true,
       "workUser": [
         "Ogün Talip Özdemir"
       ],

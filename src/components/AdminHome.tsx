@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react'
 
 export default function AdminHome() {
 
-    const { workOrderData, setWorkOrderData, userData, loginUserData, changeWorkOrder, changeControl, errorMessage, ErrorFunction, inputControl } = useContext(GlobalContext);
+    const { workOrderData, setWorkOrderData, userData, loginUserData, changeWorkOrder, changeControl } = useContext(GlobalContext);
     const [inputWorkOrder, setInputWorkOrder] = useState({ workName: "", workNotes: "", workOrder: [] as string[] });
     const [workId, setWorkId] = useState<string>("");
     const [editableWorkName, setEditableWorkName] = useState({ workName: changeWorkOrder[0]?.workName || '', workNotes: changeWorkOrder[0]?.workNotes || '', workOrder: changeWorkOrder[0]?.workUser as string[] });
@@ -15,11 +15,6 @@ export default function AdminHome() {
     }, [])
 
     const handleAddWorkOrder = (id: number) => {
-
-        if (!inputWorkOrder.workName || !inputWorkOrder.workNotes || !inputWorkOrder.workOrder) {
-            ErrorFunction("Please do not leave blank");
-            return;
-        }
 
         let newWorkOrder = {
             id: Number(randomID(4)),
@@ -133,8 +128,6 @@ export default function AdminHome() {
                     </table>
                 </div>
             </div>
-
-            <h3 className={`error__title ${inputControl.inputControl ? "active" : ""}`}>{errorMessage.errorMessage}</h3>
 
             <div className='form__action__container'>
 
