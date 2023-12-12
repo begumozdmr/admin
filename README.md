@@ -26,6 +26,10 @@ Write the following code instead of powershell in visual studio code application
     npm i
     npm run start
 
+#### `Step 5:` 
+Admin Email and Password : arzu@info.com (arzu1234)<br>
+User Email and Password : begum@info.com (begumozdemir)
+
 ## IMPORTANT ! <br>
 `NODE.JS MUST BE INSTALLED ON YOUR COMPUTER FOR THE PROJECT TO WORK. IF NOT INSTALLED, PLEASE INSTALL NODE.JS FROM THE LINK BELOW.`
 
